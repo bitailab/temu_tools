@@ -1,6 +1,7 @@
 from PyPDF2.generic import RectangleObject
 from PyPDF2 import PdfReader, PdfWriter, Transformation
 
+triman_file_path = "images/triman_2.pdf"
 reader = PdfReader("txm.pdf")
 merger = PdfWriter()
 new_page = reader.pages[0]
@@ -26,7 +27,7 @@ for i in range(1, total_tags):
     x_n = i % num_per_row
     if(abs(y_n) % 2 == 1 or current_barcode_index>=len(reader.pages)):
         #奇数行或者条码已经打印完毕，将剩余部分打印 triman 标签，同时不更新current_barcode_index
-        triman_reader = PdfReader("images/triman.pdf")
+        triman_reader = PdfReader(triman_file_path)
         p1 = triman_reader.pages[0]
     else:
         p1 = reader.pages[current_barcode_index]
