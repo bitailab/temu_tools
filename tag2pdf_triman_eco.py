@@ -1,7 +1,7 @@
 from PyPDF2.generic import RectangleObject
 from PyPDF2 import PdfReader, PdfWriter, Transformation
 
-triman_file_path = "images/triman_2.pdf"
+triman_file_path = "images/triman_3.pdf"
 reader = PdfReader("txm.pdf")
 merger = PdfWriter()
 new_page = reader.pages[0]
@@ -15,8 +15,6 @@ y_n = 0
 x_n = 0
 for i in range(1, total_tags):
     if(i % num_per_page == 0):
-        # 一页已经满了，保存当前页
-        merger.add_page(new_page)
         if(current_barcode_index<len(reader.pages)):
             new_page = reader.pages[current_barcode_index]
             current_barcode_index += 1
@@ -55,6 +53,11 @@ for i in range(1, total_tags):
     new_page.trimbox = RectangleObject((m_mb.left, m_mb.bottom, m_mb.right, m_mb.top))
     new_page.bleedbox = RectangleObject((m_mb.left, m_mb.bottom, m_mb.right, m_mb.top))
     new_page.artbox = RectangleObject((m_mb.left, m_mb.bottom, m_mb.right, m_mb.top))
+
+    
+    if(i % num_per_page == num_per_page-1):
+        # 一页已经满了，保存当前页
+        merger.add_page(new_page)
 
 with open("triman_output.pdf", "wb") as fp:
     merger.write(fp)
